@@ -13,7 +13,7 @@ Installing
     if you allready have a index.js in your client_packages: add require('attachedBike');
   
   
-Usage:
+Usage
 
     Press "G" - Attach/Unattach player to/from bike
     
