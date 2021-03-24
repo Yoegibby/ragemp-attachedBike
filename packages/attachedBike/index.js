@@ -5,7 +5,7 @@ mp.events.add('playerReady', (player) => {
     setTimeout(() => {
         if (!mp.players.exists(player)) return;
         mp.players.forEach(target => {
-            if (typeof(target.attachedBike) == 'number') {
+            if (typeof target.attachedBike == 'number') {
                 player.call('SyncAttachBikeProcessClient', [target.id, target.attachedBike]);
             }
         });
@@ -38,8 +38,6 @@ mp.events.add('SyncDetachBikeProcess', (player, handle) => {
         deleteHandle(handle);
         mp.players.call('SyncDetachBikeProcessClient', [player.id, handle]);
         player.stopAnimation();
-    } else {
-        player.outputChatBox(`!{red}Bike SyncDetachBikeProcess`);
     }
 });
 
@@ -53,7 +51,7 @@ function deleteHandle(handle) {
 
 // Remove player from Array on quit
 mp.events.add('playerQuit', (player) => {
-    if (typeof(player.attachedBike) == 'number') {
+    if (typeof player.attachedBike == 'number') {
         deleteHandle(player.attachedBike);
     }
 });
@@ -63,17 +61,13 @@ mp.events.addCommand('bike', (player, _, veh = '1') => {
     let vehName = 'bmx';
     if (veh != '1') vehName = 'cruiser';
 
-    if (vehName && vehName.trim().length > 0) {
-        let pos = player.position;
-        let name = mp.joaat(vehName);
+    let pos = player.position;
+    let name = mp.joaat(vehName);
 
-        veh = mp.vehicles.new(name, pos);
-        setVehVariables(veh);
+    veh = mp.vehicles.new(name, pos);
+    setVehVariables(veh);
 
-        player.putIntoVehicle(veh, 0);
-    } else {
-        player.outputChatBox(`!{red}Command syntax:!{yellow} /bike [number]`);
-    }
+    player.putIntoVehicle(veh, 0);
 });
 
 function setVehVariables(vehicle) {
