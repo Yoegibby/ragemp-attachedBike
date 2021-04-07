@@ -1,4 +1,9 @@
-var attachedVeh = [];       // Array with all attached vehicles
+var attachedVeh = [];       // Array with all attached vehicles for occupied check
+var anim = {};
+anim.animDict = 'amb@prop_human_seat_chair_mp@male@generic@base';
+anim.animName = 'base';
+anim.speed = 2;
+anim.flag = 1;
 
 // Attach players on Join / client needs timeout for loading vehicles
 mp.events.add('playerReady', (player) => {
@@ -21,14 +26,9 @@ mp.events.add('SyncAttachBikeProcess', (player, handle) => {
         attachedVeh.push(handle);
         player.attachedBike = handle;
     }
-    mp.players.call('SyncAttachBikeProcessClient', [player.id, handle]);
 
-    let anim = {};
-    anim.animDict = 'amb@prop_human_seat_chair_mp@male@generic@base';
-    anim.animName = 'base';
-    anim.speed = 2;
-    anim.flag = 1;
     player.playAnimation(anim.animDict, anim.animName, anim.speed, anim.flag);
+    mp.players.call('SyncAttachBikeProcessClient', [player.id, handle]);
 });
 
 // Unattach player 4 mp.players
@@ -36,7 +36,7 @@ mp.events.add('SyncDetachBikeProcess', (player, handle) => {
     if (attachedVeh.includes(handle) && player.attachedBike == handle) {
         player.attachedBike = false;
         deleteHandle(handle);
-        mp.players.call('SyncDetachBikeProcessClient', [player.id, handle]);
+        mp.players.call('SyncDetachBikeProcessClient', [player.id]);
         player.stopAnimation();
     }
 });
@@ -66,7 +66,6 @@ mp.events.addCommand('bike', (player, _, veh = '1') => {
 
     veh = mp.vehicles.new(name, pos);
     setVehVariables(veh);
-
     player.putIntoVehicle(veh, 0);
 });
 

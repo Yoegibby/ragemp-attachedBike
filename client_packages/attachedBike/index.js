@@ -4,14 +4,14 @@ var player,
 
 init();
 
-function init () {
+function init() {
     player = mp.players.local;
     bicycle = null;
     state = false;
     initEvents();
 }
 
-function initEvents () {
+function initEvents() {
     mp.keys.bind(0x47, true, function () {
         if (player.vehicle) return;
         if (mp.gui.cursor.visible) return;
@@ -19,7 +19,7 @@ function initEvents () {
     });
 }
 
-function process () {
+function process() {
     if (state == true) {
         state = false;
         if (bicycle == null) return;
@@ -32,24 +32,27 @@ function process () {
 
         bicycle = null;
     } else {
+        bicycle = null;
+
         let vehicle = getNearestVehicle(player, 2);
+        if (!vehicle) return;
 
         let vehClass = vehicle.getClass();
         if (vehClass != 13) return; // return when not a bike   
 
         switch (vehicle.model) {
-        case mp.game.joaat('cruiser'):
-            bicycle = vehicle;
-            break;
-        case mp.game.joaat('bmx'):
-            bicycle = vehicle;
-            break;
-        default:
-            return;
+            case mp.game.joaat('cruiser'):
+                bicycle = vehicle;
+                break;
+            case mp.game.joaat('bmx'):
+                bicycle = vehicle;
+                break;
+            default:
+                return;
         }
 
         if (bicycle != null) {
-            mp.events.callRemote('SyncAttachBikeProcess', bicycle.remoteId, bicycle);
+            mp.events.callRemote('SyncAttachBikeProcess', bicycle.remoteId);
         }
     }
 }
@@ -87,12 +90,12 @@ mp.events.add('SyncAttachBikeProcessClient', (id, vehicleId) => {
     if (id == player.remoteId) state = true;
 
     switch (targetVeh.model) {
-    case mp.game.joaat('cruiser'):
-        target.attachTo(targetVeh.handle, 0, 0, -0.7, 0.2, -10, 0, 0, true, false, false, true, 0, true);
-        break;
-    case mp.game.joaat('bmx'):
-        target.attachTo(targetVeh.handle, 0, 0, 0.2, 0.6, 0, 0, 0, true, false, false, false, 0, true);
-        break;
+        case mp.game.joaat('cruiser'):
+            target.attachTo(targetVeh.handle, 0, 0, -0.7, 0.2, -10, 0, 0, true, false, false, true, 0, true);
+            break;
+        case mp.game.joaat('bmx'):
+            target.attachTo(targetVeh.handle, 0, 0, 0.2, 0.6, 0, 0, 0, true, false, false, false, 0, true);
+            break;
     }
 });
 
