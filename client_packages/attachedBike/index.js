@@ -47,6 +47,15 @@ function process() {
             case mp.game.joaat('bmx'):
                 bicycle = vehicle;
                 break;
+            case mp.game.joaat('scorcher'):
+                bicycle = vehicle;
+                break;
+            case mp.game.joaat('yj28'):
+                bicycle = vehicle;
+                break;
+            case mp.game.joaat('lowriderb'):
+                bicycle = vehicle;
+                break;
             default:
                 return;
         }
@@ -87,16 +96,27 @@ mp.events.add('SyncAttachBikeProcessClient', (id, vehicleId) => {
     var targetVeh = mp.vehicles.atRemoteId(vehicleId);
     if (!targetVeh) return;
 
-    if (id == player.remoteId) state = true;
-
     switch (targetVeh.model) {
         case mp.game.joaat('cruiser'):
-            target.attachTo(targetVeh.handle, 0, 0, -0.7, 0.2, -10, 0, 0, true, false, false, true, 0, true);
+            target.attachTo(targetVeh.handle, 0, 0, -0.7, 0.2, -10, 0, 0, true, false, false, false, 0, true);
             break;
         case mp.game.joaat('bmx'):
             target.attachTo(targetVeh.handle, 0, 0, 0.2, 0.6, 0, 0, 0, true, false, false, false, 0, true);
             break;
+        case mp.game.joaat('scorcher'):
+            target.attachTo(targetVeh.handle, 0, 0, 0.35, 0.45, 0, 0, 0, true, false, false, false, 0, true);
+            break;
+        case mp.game.joaat('yj28'):
+            target.attachTo(targetVeh.handle, 0, 0, -0.7, 0.5, -10, 0, 0, true, false, false, false, 0, true);
+            break;
+        case mp.game.joaat('lowriderb'):
+            target.attachTo(targetVeh.handle, 0, 0, -0.6, 0.5, -10, -180, 0, true, false, false, false, 0, true);
+            break;
+        default:
+            return;
     }
+
+    if (id == player.remoteId) state = true;
 });
 
 // Server sync

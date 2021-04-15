@@ -57,19 +57,12 @@ mp.events.add('playerQuit', (player) => {
 });
 
 // Test command
-mp.events.addCommand('bike', (player, _, veh = '1') => {
-    let vehName = 'bmx';
-    if (veh != '1') vehName = 'cruiser';
-
+mp.events.addCommand('bike', (player, _, veh = 'cruiser') => {
     let pos = player.position;
-    let name = mp.joaat(vehName);
+    let name = mp.joaat(veh);
 
     veh = mp.vehicles.new(name, pos);
-    setVehVariables(veh);
+    veh.setColor(134, 147);
     player.putIntoVehicle(veh, 0);
 });
 
-function setVehVariables(vehicle) {
-    vehicle.setColor(134, 147);
-    vehicle.numberPlate = 'BIKE';
-}
